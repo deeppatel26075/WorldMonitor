@@ -18,3 +18,44 @@ target/
 
 # Common local artifacts
 .DS_Store
+
+# Exclude serverless function files to fit under Hobby plan's 12-function limit
+api/conflict/
+api/aviation/
+api/climate/
+api/seismology/
+api/trade/
+api/unrest/
+api/cyber/
+api/intelligence/
+api/military/
+api/shipping/
+api/scenario/
+api/consumer-prices/
+api/displacement/
+api/economic/
+api/forecast/
+api/giving/
+api/health/
+api/imagery/
+api/infrastructure/
+api/leads/
+api/maritime/
+api/market/
+api/natural/
+api/news/
+api/positive-events/
+api/prediction/
+api/radiation/
+api/research/
+api/resilience/
+api/sanctions/
+api/thermal/
+api/webcam/
+api/wildfire/
+api/skills/
+api/slack/
+api/discord/
+api/youtube/
+api/oauth/
+api/v2/
