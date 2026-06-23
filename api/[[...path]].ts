@@ -77,26 +77,26 @@ import reverseGeocode from './reverse-geocode.js';
 import userPrefs from './user-prefs';
 // @ts-expect-error — JS module, no declaration file
 import wmSession from './wm-session';
-import slackOauthStart from './slack/oauth/start';
-import slackOauthCallback from './slack/oauth/callback';
-import discordOauthStart from './discord/oauth/start';
-import discordOauthCallback from './discord/oauth/callback';
+import slackOauthStart from './_slack/oauth/start';
+import slackOauthCallback from './_slack/oauth/callback';
+import discordOauthStart from './_discord/oauth/start';
+import discordOauthCallback from './_discord/oauth/callback';
 // @ts-expect-error — JS module, no declaration file
-import oauthAuthorize from './oauth/authorize.js';
-import oauthToken from './oauth/token';
+import oauthAuthorize from './_oauth/authorize.js';
+import oauthToken from './_oauth/token';
 // @ts-expect-error — JS module, no declaration file
-import oauthRegister from './oauth/register';
-import oauthAuthorizePro from './oauth/authorize-pro';
-import oauthProtectedResource from './oauth-protected-resource';
+import oauthRegister from './_oauth/register';
+import oauthAuthorizePro from './_oauth/authorize-pro';
+import oauthProtectedResource from './_oauth-protected-resource';
 // @ts-expect-error — JS module, no declaration file
-import securityReport from './security/report.js';
+import securityReport from './_security/report.js';
 // @ts-expect-error — JS module, no declaration file
-import youtubeEmbed from './youtube/embed.js';
+import youtubeEmbed from './_youtube/embed.js';
 // @ts-expect-error — JS module, no declaration file
-import youtubeLive from './youtube/live.js';
-import fetchAgentSkills from './skills/fetch-agentskills';
-import shippingWebhookSubscriber from './v2/shipping/webhooks/[subscriberId]';
-import shippingWebhookAction from './v2/shipping/webhooks/[subscriberId]/[action]';
+import youtubeLive from './_youtube/live.js';
+import fetchAgentSkills from './_skills/fetch-agentskills';
+import shippingWebhookSubscriber from './_v2/shipping/webhooks/[subscriberId]';
+import shippingWebhookAction from './_v2/shipping/webhooks/[subscriberId]/[action]';
 
 export const config = { runtime: 'edge' };
 
