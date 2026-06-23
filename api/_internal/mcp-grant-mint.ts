@@ -56,7 +56,7 @@ export const config = { runtime: 'edge' };
 import { resolveClerkSession } from '../../server/_shared/auth-session';
 import { getEntitlements } from '../../server/_shared/entitlement-check';
 // @ts-expect-error — JS module, no declaration file
-import { isAllowedRedirectUri } from '../oauth/register.js';
+import { isAllowedRedirectUri } from '../_oauth/register.js';
 import { GrantConfigError, signGrant } from '../_mcp-grant-hmac';
 
 // Fixed return URL — NOT user-controllable (anti-phishing).
