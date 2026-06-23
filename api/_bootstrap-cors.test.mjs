@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import test from 'node:test';
-import handler from './bootstrap.js';
+import handler from './_bootstrap.js';
 import { issueSessionToken } from './_session.js';
 
 function makePreflight(origin) {

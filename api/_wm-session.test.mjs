@@ -7,7 +7,7 @@ process.env.WIDGET_AGENT_KEY = 'widget-secret';
 process.env.PRO_WIDGET_KEY = 'pro-secret';
 process.env.WORLDMONITOR_VALID_KEYS = 'enterprise-secret';
 
-const { default: handler } = await import('./wm-session.js');
+const { default: handler } = await import('./_wm-session.js');
 const { validateSessionToken } = await import('./_session.js');
 
 function makeReq(method, { origin } = {}) {

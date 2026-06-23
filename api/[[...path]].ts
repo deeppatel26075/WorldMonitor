@@ -63,20 +63,20 @@ import { createTradeServiceRoutes } from '../src/generated/server/worldmonitor/t
 import { tradeHandler } from '../server/worldmonitor/trade/v1/handler';
 import { createUnrestServiceRoutes } from '../src/generated/server/worldmonitor/unrest/v1/service_server';
 import { unrestHandler } from '../server/worldmonitor/unrest/v1/handler';
-import { createShippingV2ServiceRoutes } from '../src/generated/server/worldmonitor/shipping/v2/service_server';
-import { shippingV2Handler } from '../server/worldmonitor/shipping/v2/handler';
 import { createWebcamServiceRoutes } from '../src/generated/server/worldmonitor/webcam/v1/service_server';
 import { webcamHandler } from '../server/worldmonitor/webcam/v1/handler';
 import { createWildfireServiceRoutes } from '../src/generated/server/worldmonitor/wildfire/v1/service_server';
 import { wildfireHandler } from '../server/worldmonitor/wildfire/v1/handler';
+import { createShippingV2ServiceRoutes } from '../src/generated/server/worldmonitor/shipping/v2/service_server';
+import { shippingV2Handler } from '../server/worldmonitor/shipping/v2/handler';
 
-// Custom/operational handlers
-import mcpHandler from './mcp';
+// Custom/operational handlers (from the root of api/)
+import mcpHandler from './_mcp';
 // @ts-expect-error — JS module, no declaration file
-import reverseGeocode from './reverse-geocode.js';
-import userPrefs from './user-prefs';
+import reverseGeocode from './_reverse-geocode.js';
+import userPrefs from './_user-prefs';
 // @ts-expect-error — JS module, no declaration file
-import wmSession from './wm-session';
+import wmSession from './_wm-session';
 import slackOauthStart from './_slack/oauth/start';
 import slackOauthCallback from './_slack/oauth/callback';
 import discordOauthStart from './_discord/oauth/start';
@@ -97,6 +97,66 @@ import youtubeLive from './_youtube/live.js';
 import fetchAgentSkills from './_skills/fetch-agentskills';
 import shippingWebhookSubscriber from './_v2/shipping/webhooks/[subscriberId]';
 import shippingWebhookAction from './_v2/shipping/webhooks/[subscriberId]/[action]';
+
+// Newly renamed handlers
+// @ts-expect-error — JS module, no declaration file
+import bootstrap from './_bootstrap.js';
+// @ts-expect-error — JS module, no declaration file
+import cachePurge from './_cache-purge.js';
+import chatAnalyst from './_chat-analyst';
+import createCheckout from './_create-checkout';
+import customerPortal from './_customer-portal';
+// @ts-expect-error — JS module, no declaration file
+import download from './_download.js';
+// @ts-expect-error — JS module, no declaration file
+import fwdstart from './_fwdstart.js';
+// @ts-expect-error — JS module, no declaration file
+import geo from './_geo.js';
+// @ts-expect-error — JS module, no declaration file
+import gpsjam from './_gpsjam.js';
+// @ts-expect-error — JS module, no declaration file
+import health from './_health.js';
+import invalidateUserApiKeyCache from './_invalidate-user-api-key-cache';
+import latestBrief from './_latest-brief';
+import mcpProxy from './_mcp-proxy';
+import notificationChannels from './_notification-channels';
+import notify from './_notify';
+// @ts-expect-error — JS module, no declaration file
+import ogStory from './_og-story.js';
+// @ts-expect-error — JS module, no declaration file
+import opensky from './_opensky.js';
+// @ts-expect-error — JS module, no declaration file
+import orefAlerts from './_oref-alerts.js';
+// @ts-expect-error — JS module, no declaration file
+import polymarket from './_polymarket.js';
+// @ts-expect-error — JS module, no declaration file
+import productCatalog from './_product-catalog.js';
+// @ts-expect-error — JS module, no declaration file
+import rssProxy from './_rss-proxy.js';
+import seedContractProbe from './_seed-contract-probe';
+// @ts-expect-error — JS module, no declaration file
+import seedHealth from './_seed-health.js';
+// @ts-expect-error — JS module, no declaration file
+import story from './_story.js';
+import symbolSearch from './_symbol-search';
+// @ts-expect-error — JS module, no declaration file
+import telegramFeed from './_telegram-feed.js';
+// @ts-expect-error — JS module, no declaration file
+import version from './_version.js';
+import widgetAgent from './_widget-agent';
+
+// Subfolder handlers
+import briefCarousel from './_brief/carousel/[userId]/[issueDate]/[page]';
+import briefPublic from './_brief/public/[hash]';
+import briefShareUrl from './_brief/share-url';
+import briefUserIssue from './_brief/[userId]/[issueDate]';
+import internalBriefWhyMatters from './_internal/brief-why-matters';
+import internalMcpGrantContext from './_internal/mcp-grant-context';
+import internalMcpGrantMint from './_internal/mcp-grant-mint';
+import meEntitlement from './_me/entitlement';
+import referralMe from './_referral/me';
+import userMcpQuota from './_user/mcp-quota';
+import userMcpRevoke from './_user/mcp-revoke';
 
 export const config = { runtime: 'edge' };
 
@@ -132,9 +192,9 @@ const domainGateways: Record<string, (req: Request) => Promise<Response>> = {
   '/api/thermal/v1': createDomainGateway(createThermalServiceRoutes(thermalHandler, serverOptions)),
   '/api/trade/v1': createDomainGateway(createTradeServiceRoutes(tradeHandler, serverOptions)),
   '/api/unrest/v1': createDomainGateway(createUnrestServiceRoutes(unrestHandler, serverOptions)),
-  '/api/v2/shipping': createDomainGateway(createShippingV2ServiceRoutes(shippingV2Handler, serverOptions)),
   '/api/webcam/v1': createDomainGateway(createWebcamServiceRoutes(webcamHandler, serverOptions)),
   '/api/wildfire/v1': createDomainGateway(createWildfireServiceRoutes(wildfireHandler, serverOptions)),
+  '/api/v2/shipping': createDomainGateway(createShippingV2ServiceRoutes(shippingV2Handler, serverOptions)),
 };
 
 export default async function handler(req: Request, ctx: any): Promise<Response> {
@@ -160,6 +220,36 @@ export default async function handler(req: Request, ctx: any): Promise<Response>
   if (pathname === '/api/youtube/live') return youtubeLive(req, ctx);
   if (pathname === '/api/skills/fetch-agentskills') return fetchAgentSkills(req);
 
+  // Root endpoints routing
+  if (pathname === '/api/bootstrap') return bootstrap(req, ctx);
+  if (pathname === '/api/cache-purge') return cachePurge(req, ctx);
+  if (pathname === '/api/chat-analyst') return chatAnalyst(req);
+  if (pathname === '/api/create-checkout') return createCheckout(req, ctx);
+  if (pathname === '/api/customer-portal') return customerPortal(req, ctx);
+  if (pathname === '/api/download') return download(req, ctx);
+  if (pathname === '/api/fwdstart') return fwdstart(req, ctx);
+  if (pathname === '/api/geo') return geo(req);
+  if (pathname === '/api/gpsjam') return gpsjam(req, ctx);
+  if (pathname === '/api/health') return health(req, ctx);
+  if (pathname === '/api/invalidate-user-api-key-cache') return invalidateUserApiKeyCache(req);
+  if (pathname === '/api/latest-brief') return latestBrief(req, ctx);
+  if (pathname === '/api/mcp-proxy') return mcpProxy(req);
+  if (pathname === '/api/notification-channels') return notificationChannels(req, ctx);
+  if (pathname === '/api/notify') return notify(req);
+  if (pathname === '/api/og-story') return ogStory(req, ctx);
+  if (pathname === '/api/opensky') return opensky(req, ctx);
+  if (pathname === '/api/oref-alerts') return orefAlerts(req, ctx);
+  if (pathname === '/api/polymarket') return polymarket(req, ctx);
+  if (pathname === '/api/product-catalog') return productCatalog(req, ctx);
+  if (pathname === '/api/rss-proxy') return rssProxy(req, ctx);
+  if (pathname === '/api/seed-contract-probe') return seedContractProbe(req);
+  if (pathname === '/api/seed-health') return seedHealth(req, ctx);
+  if (pathname === '/api/story') return story(req, ctx);
+  if (pathname === '/api/symbol-search') return symbolSearch(req, ctx);
+  if (pathname === '/api/telegram-feed') return telegramFeed(req, ctx);
+  if (pathname === '/api/version') return version(req, ctx);
+  if (pathname === '/api/widget-agent') return widgetAgent(req);
+
   // 2. Dynamic path matches (e.g. shipping webhooks)
   if (pathname.startsWith('/api/v2/shipping/webhooks/')) {
     const parts = pathname.slice('/api/v2/shipping/webhooks/'.length).split('/');
@@ -170,6 +260,29 @@ export default async function handler(req: Request, ctx: any): Promise<Response>
       return shippingWebhookAction(req);
     }
   }
+
+  // Brief dynamic subfolder matches
+  if (pathname.startsWith('/api/brief/carousel/')) {
+    return briefCarousel(req, ctx);
+  }
+  if (pathname.startsWith('/api/brief/public/')) {
+    return briefPublic(req, ctx);
+  }
+  if (pathname === '/api/brief/share-url') {
+    return briefShareUrl(req, ctx);
+  }
+  if (pathname.startsWith('/api/brief/')) {
+    return briefUserIssue(req, ctx);
+  }
+
+  // Other subfolder matches
+  if (pathname === '/api/me/entitlement') return meEntitlement(req);
+  if (pathname === '/api/referral/me') return referralMe(req, ctx);
+  if (pathname === '/api/user/mcp-quota') return userMcpQuota(req);
+  if (pathname === '/api/user/mcp-revoke') return userMcpRevoke(req);
+  if (pathname === '/api/internal/brief-why-matters') return internalBriefWhyMatters(req, ctx);
+  if (pathname === '/api/internal/mcp-grant-context') return internalMcpGrantContext(req);
+  if (pathname === '/api/internal/mcp-grant-mint') return internalMcpGrantMint(req);
 
   // 3. Domain Gateway prefix checks
   for (const [prefix, gateway] of Object.entries(domainGateways)) {
